@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace Fyp_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/tidalprediction")]
     public class TidalPredictionController : Controller
     {
         // GET api/values
@@ -22,19 +22,11 @@ namespace Fyp_Backend.Controllers
         public TidalPrediction Get(int id)
         {
             TidalPredictionPersistance tpp = new TidalPredictionPersistance();
-            TidalPrediction tidalPrediction = tpp.getTidalPrediction(id);
+            TidalPrediction tidalPrediction = tpp.getTidalPredictionByID(id);
 
-            //pred.PredictionID = id;
-            //pred.Time = DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
-            //pred.StationLocation = "Arklow";
-            //pred.Latitude = 34.9896;
-            //pred.Longitude = -14.49562;
-            //pred.Water_Level = 2.1;
-            //pred.Water_Level = -1.53;
 
             return tidalPrediction;
         }
-
         // POST api/values
         [HttpPost]
         public void Post([FromBody]TidalPrediction value)

@@ -1,9 +1,5 @@
 ﻿using Fyp_Backend.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MySql.Data;
 using System.Collections;
 
 namespace Fyp_Backend
@@ -14,7 +10,10 @@ namespace Fyp_Backend
 
         public TidalPredictionPersistance()
         {
+            //connect to DB
             string myConnectionString;
+            // string serverName = "http://192.168.1.39/phpmyadmin/";
+            //myConnectionString = "server="+serverName+";uid=root;pwd=admin;database=tidal_wave_prediction_app";
             myConnectionString = "server=localhost;uid=root;pwd=admin;database=tidal_wave_prediction_app";
             try
             {
@@ -30,8 +29,10 @@ namespace Fyp_Backend
 
         public long saveTidalPrediction(TidalPrediction tidalPredictionToSave)
         {
+            //POST functionality
             String sqlString = "INSERT INTO tidalprediction (Latitude, Longitude, StationLocation, Time, Water_Level, Water_Level_ODM) " +
-                "VALUES (" + tidalPredictionToSave.Longitude + "," + tidalPredictionToSave.Latitude + ",'" + tidalPredictionToSave.StationLocation + "','" + tidalPredictionToSave.Time + "'," + tidalPredictionToSave.Water_Level + "," + tidalPredictionToSave.Water_Level_ODM + ")";
+                "VALUES (" + tidalPredictionToSave.Longitude + "," + tidalPredictionToSave.Latitude + ",'" + tidalPredictionToSave.StationLocation
+                + "','" + tidalPredictionToSave.Time + "'," + tidalPredictionToSave.Water_Level + "," + tidalPredictionToSave.Water_Level_ODM + ")";
             MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
             cmd.ExecuteNonQuery();
             long id = (int)cmd.LastInsertedId;
@@ -40,6 +41,7 @@ namespace Fyp_Backend
         }
         public ArrayList getAllTidalPredictions()
         {
+            //GET all Tidal Predictions
             ArrayList tidalPredictionArray = new ArrayList();
             MySql.Data.MySqlClient.MySqlDataReader mySqlReader = null;
 
@@ -62,8 +64,9 @@ namespace Fyp_Backend
             return tidalPredictionArray;
         }
 
-        public TidalPrediction getTidalPrediction(int ID)
+        public TidalPrediction getTidalPredictionByID(int ID)
         {
+            //GET Tidal Prediction by ID
             TidalPrediction tp = new TidalPrediction();
             MySql.Data.MySqlClient.MySqlDataReader mySqlReader = null;
 
@@ -88,5 +91,59 @@ namespace Fyp_Backend
             }
         }
 
+        public TidalPrediction getTidalPredictionByStation(string station)
+        {
+            //GET Tidal Prediction by StationLocation
+            TidalPrediction tp = new TidalPrediction();
+            MySql.Data.MySqlClient.MySqlDataReader mySqlReader = null;
+
+            String sqlString = "SELECT * FROM tidalprediction WHERE StationLocation = " + station;
+            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+
+            mySqlReader = cmd.ExecuteReader();
+            if (mySqlReader.Read())
+            {
+                tp.PredictionID = mySqlReader.GetInt32(0);
+                tp.Latitude = mySqlReader.GetDouble(1);
+                tp.Longitude = mySqlReader.GetDouble(2);
+                tp.StationLocation = mySqlReader.GetString(3);
+                tp.Time = mySqlReader.GetString(4);
+                tp.Water_Level = mySqlReader.GetDouble(5);
+                tp.Water_Level_ODM = mySqlReader.GetDouble(6);
+                return tp;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        public TidalPrediction getTidalPredictionByDate(string date)
+        {
+            //GET Tidal Prediction by Date
+            TidalPrediction tp = new TidalPrediction();
+            MySql.Data.MySqlClient.MySqlDataReader mySqlReader = null;
+
+            String sqlString = "SELECT * FROM tidalprediction WHERE Time = " + date;
+            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+
+            mySqlReader = cmd.ExecuteReader();
+            if (mySqlReader.Read())
+            {
+                tp.PredictionID = mySqlReader.GetInt32(0);
+                tp.Latitude = mySqlReader.GetDouble(1);
+                tp.Longitude = mySqlReader.GetDouble(2);
+                tp.StationLocation = mySqlReader.GetString(3);
+                tp.Time = mySqlReader.GetString(4);
+                tp.Water_Level = mySqlReader.GetDouble(5);
+                tp.Water_Level_ODM = mySqlReader.GetDouble(6);
+                return tp;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
