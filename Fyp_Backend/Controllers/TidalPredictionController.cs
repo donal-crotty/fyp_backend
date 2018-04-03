@@ -9,7 +9,7 @@ namespace Fyp_Backend.Controllers
     [Route("api/tidalprediction")]
     public class TidalPredictionController : Controller
     {
-        // GET api/values
+        // GET api/tidalprediction
         [HttpGet]
         public ArrayList Get()
         {
@@ -17,7 +17,7 @@ namespace Fyp_Backend.Controllers
             return tpp.getAllTidalPredictions();
         }
 
-        // GET api/values/5
+        // GET api/tidalprediction/1
         [HttpGet("{id}")]
         public TidalPrediction Get(int id)
         {
@@ -27,7 +27,17 @@ namespace Fyp_Backend.Controllers
 
             return tidalPrediction;
         }
-        // POST api/values
+        // GET api/tidalprediction/StationLocation
+        [HttpGet("{station}")]
+        public TidalPrediction Get(string station)
+        {
+            TidalPredictionPersistance tpp = new TidalPredictionPersistance();
+            TidalPrediction tidalPrediction = tpp.getTidalPredictionByStation(station);
+
+
+            return tidalPrediction;
+        }
+        // POST api/tidalprediction
         [HttpPost]
         public void Post([FromBody]TidalPrediction value)
         {
@@ -38,14 +48,14 @@ namespace Fyp_Backend.Controllers
             value.PredictionID = id;
             //RETURN HTTP STATUS CODES
 
-            //HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
-            //response.Headers.Location = new Uri(Request.RequestUri, String.Format("TidalPrediction/{0}", id));
-            //return response;
+            //    //HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+            //    //response.Headers.Location = new Uri(Request.RequestUri, String.Format("TidalPrediction/{0}", id));
+            //    //return response;
 
 
         }
 
-        // PUT api/values/5
+        // PUT api/tidalprediction/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {

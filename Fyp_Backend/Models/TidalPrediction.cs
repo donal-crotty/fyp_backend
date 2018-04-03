@@ -9,7 +9,7 @@ namespace Fyp_Backend.Models
     {
         public int PredictionID { get; set; }
 
-        public string Time { get; set; }
+        public DateTime Date { get; set; }
 
         public string StationLocation { get; set; }
 

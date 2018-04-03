@@ -29,10 +29,11 @@ namespace Fyp_Backend
 
         public long saveTidalPrediction(TidalPrediction tidalPredictionToSave)
         {
+            // var date = tidalPredictionToSave.Date.ToString("yyyy-MM-dd");
             //POST functionality
-            String sqlString = "INSERT INTO tidalprediction (Latitude, Longitude, StationLocation, Time, Water_Level, Water_Level_ODM) " +
+            String sqlString = "INSERT INTO tidalprediction (Latitude, Longitude, StationLocation, Date, Water_Level, Water_Level_ODM) " +
                 "VALUES (" + tidalPredictionToSave.Longitude + "," + tidalPredictionToSave.Latitude + ",'" + tidalPredictionToSave.StationLocation
-                + "','" + tidalPredictionToSave.Time + "'," + tidalPredictionToSave.Water_Level + "," + tidalPredictionToSave.Water_Level_ODM + ")";
+                + "','" + tidalPredictionToSave.Date + "'," + tidalPredictionToSave.Water_Level + "," + tidalPredictionToSave.Water_Level_ODM + ")";
             MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
             cmd.ExecuteNonQuery();
             long id = (int)cmd.LastInsertedId;
@@ -56,7 +57,7 @@ namespace Fyp_Backend
                 tp.Latitude = mySqlReader.GetDouble(1);
                 tp.Longitude = mySqlReader.GetDouble(2);
                 tp.StationLocation = mySqlReader.GetString(3);
-                tp.Time = mySqlReader.GetString(4);
+                tp.Date = mySqlReader.GetDateTime(4);
                 tp.Water_Level = mySqlReader.GetDouble(5);
                 tp.Water_Level_ODM = mySqlReader.GetDouble(6);
                 tidalPredictionArray.Add(tp);
@@ -80,7 +81,7 @@ namespace Fyp_Backend
                 tp.Latitude = mySqlReader.GetDouble(1);
                 tp.Longitude = mySqlReader.GetDouble(2);
                 tp.StationLocation = mySqlReader.GetString(3);
-                tp.Time = mySqlReader.GetString(4);
+                tp.Date = mySqlReader.GetDateTime(4);
                 tp.Water_Level = mySqlReader.GetDouble(5);
                 tp.Water_Level_ODM = mySqlReader.GetDouble(6);
                 return tp;
@@ -97,7 +98,7 @@ namespace Fyp_Backend
             TidalPrediction tp = new TidalPrediction();
             MySql.Data.MySqlClient.MySqlDataReader mySqlReader = null;
 
-            String sqlString = "SELECT * FROM tidalprediction WHERE StationLocation = " + station;
+            String sqlString = "SELECT * FROM tidalprediction WHERE StationLocation = '" + station + "'";
             MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
 
             mySqlReader = cmd.ExecuteReader();
@@ -107,7 +108,7 @@ namespace Fyp_Backend
                 tp.Latitude = mySqlReader.GetDouble(1);
                 tp.Longitude = mySqlReader.GetDouble(2);
                 tp.StationLocation = mySqlReader.GetString(3);
-                tp.Time = mySqlReader.GetString(4);
+                tp.Date = mySqlReader.GetDateTime(4);
                 tp.Water_Level = mySqlReader.GetDouble(5);
                 tp.Water_Level_ODM = mySqlReader.GetDouble(6);
                 return tp;
@@ -119,13 +120,13 @@ namespace Fyp_Backend
         }
 
 
-        public TidalPrediction getTidalPredictionByDate(string date)
+        public TidalPrediction getTidalPredictionByDate(DateTime date)
         {
             //GET Tidal Prediction by Date
             TidalPrediction tp = new TidalPrediction();
             MySql.Data.MySqlClient.MySqlDataReader mySqlReader = null;
 
-            String sqlString = "SELECT * FROM tidalprediction WHERE Time = " + date;
+            String sqlString = "SELECT * FROM tidalprediction WHERE Date = " + date;
             MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
 
             mySqlReader = cmd.ExecuteReader();
@@ -135,7 +136,7 @@ namespace Fyp_Backend
                 tp.Latitude = mySqlReader.GetDouble(1);
                 tp.Longitude = mySqlReader.GetDouble(2);
                 tp.StationLocation = mySqlReader.GetString(3);
-                tp.Time = mySqlReader.GetString(4);
+                tp.Date = mySqlReader.GetDateTime(4);
                 tp.Water_Level = mySqlReader.GetDouble(5);
                 tp.Water_Level_ODM = mySqlReader.GetDouble(6);
                 return tp;

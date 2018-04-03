@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="IIS Web Application Name" description="" value="FYPBackend" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^E:\\Donal\\BitBucket\\fyp_backend\\Fyp_Backend\\obj\\Release\\net461\\win7-x86\\PubTmp\\Out\\$" />
-  </parameter>
-</parameters>
